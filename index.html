@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test code Thôi</title>
+    <style>
+        /* Các CSS khác như trước */
+        body {
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .heart-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+        }
+
+        .dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: rgba(255, 105, 180, 0.8);
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.8);
+            animation: starTwinkle linear infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes starTwinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 8px 15px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background: rgba(255, 105, 180, 0.9);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: glowButton 1.5s ease-in-out infinite alternate;
+        }
+
+        .hidden-button {
+            margin-top: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background: rgba(100, 181, 246, 0.9);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: none;
+        }
+
+        @keyframes glowButton {
+            0% {
+                box-shadow: 0 0 10px #ff416c, 0 0 20px #ff416c;
+            }
+            100% {
+                box-shadow: 0 0 20px #ff416c, 0 0 30px #ff416c;
+            }
+        }
+
+        .icon-message, .final-message, .question-container {
+            color: rgba(255, 255, 255, 1);
+            font-size: 24px;
+            font-family: 'Arial', sans-serif;
+            margin-top: 20px;
+            display: none;
+            animation: fadeInOut 2s ease-in-out infinite alternate;
+        }
+
+        .question-container {
+            display: none;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.5;
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff416c, 0 0 40px #ff416c;
+            }
+            50% {
+                opacity: 1;
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff416c, 0 0 40px #ff416c, 0 0 50px #ff416c;
+            }
+        }
+
+        .final-message {
+            color: #ff69b4;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+                text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4, 0 0 40px #ff69b4;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .dell-btn, .roi-btn {
+            margin-top: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            background: rgba(255, 69, 58, 0.9);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .roi-btn {
+            background: rgba(100, 181, 246, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- Thêm thẻ <audio> ở đây -->
+    <audio id="background-music" loop autoplay>
+        <source src="abc.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div class="heart-container" id="heart-container"></div>
+    <button class="button" id="heart-button">Ấn vào đi</button>
+    <div class="icon-message" id="icon-message">☎+🏝+👤</div>
+    <button class="hidden-button" id="second-button">Ấn tiếp đi</button>
+    <button class="hidden-button" id="third-button">Ấn nữa đi</button>
+    <div class="final-message" id="final-message">Nhìn Giề ấn tiếp đi Đỉ Tín</div>
+    <div class="question-container" id="question-container">
+        <p>Nhớ tao chưa?</p>
+        <button class="dell-btn" id="dell-btn">Dell</button>
+        <button class="roi-btn" id="roi-btn">Rồi</button>
+    </div>
+    <div id="oki-message" class="final-message" style="display: none;">Nhớ tao chi ml.........</div>
+
+    <script>
+        const heartContainer = document.getElementById('heart-container');
+        const heartButton = document.getElementById('heart-button');
+        const iconMessage = document.getElementById('icon-message');
+        const secondButton = document.getElementById('second-button');
+        const thirdButton = document.getElementById('third-button');
+        const finalMessage = document.getElementById('final-message');
+        const questionContainer = document.getElementById('question-container');
+        const dellBtn = document.getElementById('dell-btn');
+        const roiBtn = document.getElementById('roi-btn');
+        const okiMessage = document.getElementById('oki-message');
+
+        heartButton.addEventListener('click', () => {
+            finalMessage.style.display = 'block';
+            heartButton.style.display = 'none';
+            secondButton.style.display = 'inline-block';
+        });
+
+        secondButton.addEventListener('click', () => {
+            iconMessage.style.display = 'block';
+            secondButton.style.display = 'none';
+            thirdButton.style.display = 'inline-block';
+        });
+
+        thirdButton.addEventListener('click', () => {
+            finalMessage.style.display = 'block';
+            thirdButton.style.display = 'none';
+            questionContainer.style.display = 'block';
+        });
+
+        dellBtn.addEventListener('click', () => {
+            const randomX = Math.random() * (window.innerWidth - dellBtn.offsetWidth);
+            const randomY = Math.random() * (window.innerHeight - dellBtn.offsetHeight);
+            dellBtn.style.position = 'absolute';
+            dellBtn.style.left = `${randomX}px`;
+            dellBtn.style.top = `${randomY}px`;
+        });
+
+        roiBtn.addEventListener('click', () => {
+            questionContainer.style.display = 'none';
+            okiMessage.style.display = 'block';
+        });
+
+        function heartFormula(t) {
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+            return { x, y };
+        }
+
+        function drawHeart() {
+            const totalHeartDots = 5000;
+            const totalAngle = Math.PI * 2;
+            for (let i = 0; i < totalHeartDots; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                const randomAngle = Math.random() * totalAngle;
+                const scale = Math.random() * 0.7 + 0.3;
+                const heartPos = heartFormula(randomAngle);
+                const x = heartPos.x * scale * 12 + 200;
+                const y = -heartPos.y * scale * 12 + 200;
+
+                dot.style.left = `${x}px`;
+                dot.style.top = `${y}px`;
+
+                dot.style.background = `rgba(255, 105, 180, ${Math.random() * 0.8 + 0.2})`;
+
+                heartContainer.appendChild(dot);
+            }
+        }
+
+        function createStars() {
+            const totalStars = 250;
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                const x = Math.random() * window.innerWidth;
+                const y = Math.random() * window.innerHeight;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 3 + 2;
+                star.style.left = `${x}px`;
+                star.style.top = `${y}px`;
+                star.style.animationDelay = `${delay}s`;
+                star.style.animationDuration = `${duration}s`;
+                document.body.appendChild(star);
+            }
+        }
+
+        drawHeart();
+        createStars();
+    </script>
+</body>
+</html>
